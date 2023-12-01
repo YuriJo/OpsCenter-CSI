@@ -37,6 +37,8 @@ def home_view(request):
 COMMANDS = {
     'cmd1': ['pwd'],
     'cmd2': ['ls', '-lah'],
+    'cmd3': ['python', 'manage.py', 'scan_hosts', 'list'],
+    'cmd4': ['python', 'manage.py', 'scan_hosts', 'product'],
     # Добавьте больше команд здесь
 }
 

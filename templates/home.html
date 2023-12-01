@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Домашняя Страница</title>
+    <title>Galaxen är i fara!</title>
 </head>
 <body>
-    <h1>Добро пожаловать, {{ request.user.username }}!</h1>
-    <p>Это домашняя страница.</p>
+    <h3>Hej min älskling {{ request.user.username }}! </h3> (Привет, дорогой {{ request.user.username }}! )
+    <p><h3>Detta är hemsidan.</h3> (Это домашняя страничка. Пока будет в одной всё.)</p>
 
 <!-- home.html -->
 
-
+    <br>
+    <!-- line -->
+    <hr>
 <form method="post" action="{% url 'execute_command' %}">
     {% csrf_token %}
-    <label for="command">Выберите команду:</label>
+    <label for="command">Select an action:</label>
     <select name="command" id="command">
         <option value="cmd1">pwd</option>
         <option value="cmd2">ls -la</option>
+        <option value="cmd3">make a client's list</option> 
+        <option value="cmd4">make an inventory list</option>
         <!-- Добавьте больше команд здесь -->
     </select>
-    <button type="submit">Выполнить</button>
+    <button type="submit">Do!</button>
 </form>
 
-
-    <a href="{% url 'logout' %}">Выйти</a>
+<br>
+<hr>
+    <a href="{% url 'logout' %}">Exit</a>
 
     <pre id="command-output"></pre>
 
