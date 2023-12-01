@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Домашняя Страница</title>
+</head>
+<body>
+    <h1>Добро пожаловать, {{ request.user.username }}!</h1>
+    <p>Это домашняя страница.</p>
+
+<!-- home.html -->
+
+
+<form method="post" action="{% url 'execute_command' %}">
+    {% csrf_token %}
+    <label for="command">Выберите команду:</label>
+    <select name="command" id="command">
+        <option value="cmd1">pwd</option>
+        <option value="cmd2">ls -la</option>
+        <!-- Добавьте больше команд здесь -->
+    </select>
+    <button type="submit">Выполнить</button>
+</form>
+
+
+    <a href="{% url 'logout' %}">Выйти</a>
+
+    <pre id="command-output"></pre>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            fetch('/execute-command/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('#command-output').textContent = data.output;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+    
+
+</body>
+</html>

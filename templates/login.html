@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вход</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Войти</button>
+    </form>
+<!-- login.html -->
+{% if message %}
+    <p style="color: red;">{{ message }}</p>
+{% endif %}
+<!-- Форма входа -->
+</body>
+</html>
