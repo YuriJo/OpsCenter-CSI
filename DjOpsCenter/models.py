@@ -1,6 +1,6 @@
 from django.db import models
 
-class Command(models.Model):
+class Commands(models.Model):
     name = models.CharField(max_length=100)
     command_text = models.CharField(max_length=200)
 
@@ -9,7 +9,7 @@ class Command(models.Model):
 
 from django.db import models
 
-class Client(models.Model):
+class Clients(models.Model):
     unique_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 

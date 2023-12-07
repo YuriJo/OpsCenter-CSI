@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from DjOpsCenter.models import Clients, Commands
 import os
 
 class Command(BaseCommand):
@@ -28,9 +29,15 @@ class Command(BaseCommand):
 
         # Получаем все элементы в стартовом каталоге
         with os.scandir(self.START_PATH) as entries:
-            for entry in entries:
-                if entry.is_dir():
-                    clients.add(entry.name.capitalize())  # Добавляем название клиента с большой буквы
+          for entry in entries:
+              if entry.is_dir():
+                  client_name = entry.name.capitalize()  # Получаем название клиента
+                  clients.add(client_name)
+  
+                  # Создаем запись в базе данных и проверяем, был ли клиент только что создан
+                  client, created = Clients.objects.get_or_create(name=client_name)
+                  if created:
+                      self.stdout.write(f"New client added: {client_name}")
 
         # Выводим список клиентов
         for index, client in enumerate(sorted(clients), start=1 ):  # Сортируем для удобства чтения

@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Galaxen är i fara!</title>
+    <title>Это Опс-центр. Макет.</title>
 </head>
 <body>
-    <h3>Hej min älskling {{ request.user.username }}! </h3> (Привет, дорогой {{ request.user.username }}! )
-    <p><h3>Detta är hemsidan.</h3> (Это домашняя страничка. Пока будет в одной всё.)</p>
+    <h3>Вы вошли как {{ request.user.username }}! </h3> Комментарии, мат, просьбы и предложения пишите на почту: <a href="mailto: y.zholobov@crystals.ru" > y.zholobov@crystals.ru </a>
+    <p><h3>Это основная страница</h3> Тут пока будут лежать кнопки для обновления базы данных, для получения списков и для всего остального. Потом приведём в приличный вид. ( Спойлер - нет ). </p>
 
 <!-- home.html -->
 
     <br>
     <!-- line -->
     <hr>
+
+<!-- Begin of the action list form -->    
 <form method="post" action="{% url 'execute_command' %}">
     {% csrf_token %}
-    <label for="command">Select an action:</label>
+    <label for="command">Выберите команду:</label>
     <select name="command" id="command">
         <option value="cmd1">pwd</option>
         <option value="cmd2">ls -la</option>
         <option value="cmd3">make a client's list</option> 
         <option value="cmd4">make an inventory list</option>
-        <!-- Добавьте больше команд здесь -->
+        <!-- Lets add more options -->
     </select>
-    <button type="submit">Do!</button>
+    <button type="submit">Ду!</button>
+</form>
+<!-- End of the action list form -->
+
+<br>
+<hr>
+
+<!-- Begin of the clients list form -->
+<form id="list-clients-form" method="post">
+    {% csrf_token %}
+    <button type="submit" name="list_clients">Вывести список клиентов</button>
 </form>
 
 <br>
 <hr>
+<!-- End of the clients list form -->
+
+
+
+
+
+
+
+
+
+
     <a href="{% url 'logout' %}">Exit</a>
 
     <pre id="command-output"></pre>
@@ -45,6 +68,16 @@
             })
             .catch(error => console.error('Error:', error));
         });
+
+        // Обработка формы для вывода списка клиентов
+        var listClientsForm = document.querySelector('#list-clients-form');
+        listClientsForm.addEventListener('submit', function(e) {
+            var outputElement = document.querySelector('#command-output');
+            // Предполагается, что 'list_clients' обрабатывается на том же URL, что и 'execute_command'
+            handleFormSubmit(e, outputElement, '{% url 'execute_command' %}');
+        });
+
+        
     </script>
     
 
