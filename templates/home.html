@@ -14,7 +14,7 @@
     <hr>
 
 <!-- Begin of the action list form -->    
-<form method="post" action="{% url 'execute_command' %}">
+<form id="execute-form" method="post" action="{% url 'execute_command' %}">
     {% csrf_token %}
     <label for="command">Выберите команду:</label>
     <select name="command" id="command">
@@ -55,29 +55,55 @@
     <pre id="command-output"></pre>
 
     <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            fetch('/execute-command/', {
+        // Функция для отправки данных формы и обработки ответа
+        function handleFormSubmit(event, outputElement, url) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            fetch(url, {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
-                document.querySelector('#command-output').textContent = data.output;
+                outputElement.textContent = data.output || 'No output';
             })
             .catch(error => console.error('Error:', error));
-        });
+        }
 
-        // Обработка формы для вывода списка клиентов
-        var listClientsForm = document.querySelector('#list-clients-form');
-        listClientsForm.addEventListener('submit', function(e) {
+        // Обработка формы выполнения команд
+        var executeForm = document.querySelector('#execute-form');
+        executeForm.addEventListener('submit', function(e) {
             var outputElement = document.querySelector('#command-output');
-            // Предполагается, что 'list_clients' обрабатывается на том же URL, что и 'execute_command'
-            handleFormSubmit(e, outputElement, '{% url 'execute_command' %}');
+            handleFormSubmit(e, outputElement, executeForm.action);
         });
 
-        
+    
+
+       // Обработка формы для вывода списка клиентов
+       var listClientsForm = document.querySelector('#list-clients-form');
+       listClientsForm.addEventListener('submit', function(e) {
+           e.preventDefault();
+           var outputElement = document.querySelector('#command-output');
+       
+           fetch('{% url 'list_clients' %}', {
+               method: 'POST',
+               body: new FormData(listClientsForm)
+           })
+           .then(response => response.json())
+           .then(data => {
+               if (data.clients) {
+                   outputElement.textContent = data.clients.join('\n');
+               } else {
+                   outputElement.textContent = 'No clients found';
+               }
+           })
+           .catch(error => {
+               console.error('Error:', error);
+               outputElement.textContent = 'Error loading clients';
+           });
+         });
+
+
     </script>
     
 

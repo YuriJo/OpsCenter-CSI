@@ -16,25 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from .views import login_view
-from .views import home_view
 from django.contrib.auth.views import LogoutView
 from django.views.generic import RedirectView
 
-from .views import execute_command_view
+from DjOpsCenter.views.execute_command_view import execute_command_view
+from DjOpsCenter.views.login_view import login_view
+from DjOpsCenter.views.home_view import home_view
+from DjOpsCenter.views.list_clients_view import list_clients_view
 
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('login/', login_view, name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    # home
-    path('home/', home_view, name='home'),
-
-    re_path(r'^$', RedirectView.as_view(url='/home/', permanent=False), name='index'), 
-
-    path('execute-command/', execute_command_view, name='execute_command'),
+    path("admin/", admin.site.urls),                                                   # Админка
+    path('login/', login_view, name='login'),                                          # Страница входа
+    path('logout/', LogoutView.as_view(), name='logout'),                              # Страница выхода
+    path('home/', home_view, name='home'),                                             # Главная страница
+    re_path(r'^$', RedirectView.as_view(url='/home/', permanent=False), name='index'), # Перенаправление на главную страницу
+    path('execute-command/', execute_command_view, name='execute_command'),            # Страница выполнения команды
+    path('list-clients/', list_clients_view, name='list_clients'),                     # Страница списка клиентов
 
 
     

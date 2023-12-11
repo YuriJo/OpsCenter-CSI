@@ -5,7 +5,7 @@ import os
 class Command(BaseCommand):
     help = 'Scans the first level directories and lists all clients.'
 
-    START_PATH = '/Users/yuri/Work/ansible-infrastructure/inventories'  # Измените на ваш фактический путь
+    START_PATH = '/Users/yuri/Work/ansible-infrastructure/inventories'  
 
     def add_arguments(self, parser):
         parser.add_argument('action', type=str, help='Action to perform: list or product')
@@ -73,5 +73,3 @@ class Command(BaseCommand):
                 products.add(product)
         return products
     
-        # Дополнительные функции для сканирования и обработки данных
-        # ...
